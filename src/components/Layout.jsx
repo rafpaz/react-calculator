@@ -26,10 +26,11 @@ class Layout extends Component {
         return buttonsList.map((val)=>{return <Button btnClicked={this.btnClicked.bind(this)} key={val} value={val} />});
     }
 
+    //Check if the last digit is an operator
     isEndWithOperator(str) {
         return (this.operatorList.indexOf(str.slice(-1)) > -1);
     }
-
+    //Check if the first digit is an operator
     isStartWithOperator(str) {
         return (this.operatorList.indexOf(str.substr(0,1)) > -1);
     }
