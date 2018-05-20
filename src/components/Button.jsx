@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import operatorsList from '../data/operatorsList';
 
+/**
+ * This class is responsible for Button display and behavior (action button or regular)
+ * When button is clicked, the parent function btnClicked will be triggered
+ */
 class Button extends Component {
     handleChange(){
-        this.props.clickBtn(this.props.value);
+        this.props.btnClicked(this.props.value);
     }
 
     render(){

@@ -4,20 +4,26 @@ import Button from './Button';
 import buttonsList from '../data/buttonsList';
 import operatorsList from '../data/operatorsList';
 
+/**
+ * Layout class is in charge of all the logic of the calculator 
+ */
 class Layout extends Component {
     constructor(){
         super();
         this.state = {
             display: 0,
-            lastAns: null,
-            getAnsClicked: false
+            prevAnswer: null,
+            showAnswer: false
         };
         this.operatorList = operatorsList;
         this.buttonMap = this.getButtonsMap();
+        this.handleEqualsClicked = this.handleEqualsClicked.bind(this);
+        this.handlePlusMinusClicked = this.handlePlusMinusClicked.bind(this);
+        this.handleACClicked = this.handleACClicked.bind(this);
     }
 
     getButtonsMap(){
-        return buttonsList.map((val)=>{return <Button clickBtn={this.clickBtn.bind(this)} key={val} value={val} />});
+        return buttonsList.map((val)=>{return <Button btnClicked={this.btnClicked.bind(this)} key={val} value={val} />});
     }
 
     isEndWithOperator(str) {
@@ -28,52 +34,66 @@ class Layout extends Component {
         return (this.operatorList.indexOf(str.substr(0,1)) > -1);
     }
 
-    clickBtn(btnVal) {
-        let {display, lastAns, getAnsClicked} = this.state;
-        display = (display === 0 || getAnsClicked)? '' : display;
+    btnClicked(btnVal) {
+        let {display, showAnswer} = this.state;
+        display = (display === 0 || showAnswer) ? '' : display;
         switch (btnVal) {
             case '=':
-                if (this.isEndWithOperator(display)) {
-                    break; //skip eval
-                }
-
-                let ans;
-                const replacedStr = display.replace('x','*');
-                if (this.isStartWithOperator(display)) {
-                    ans = eval(lastAns + replacedStr);
-                } else {
-                    ans = eval(replacedStr);
-                }
-        
-                if (ans !== undefined) {
-                    this.setState({
-                        display: ans,
-                        lastAns: ans,
-                        getAnsClicked: true
-                    });
-                } 
+                this.handleEqualsClicked(btnVal);
                 break;
 
-                case 'AC':
-                    this.setState({display: 0, lastAns: null, getAnsClicked: false});
-                    break;
+            case 'AC':
+                this.handleACClicked();
+                break;
 
-                case '+':
-                case '-':
-                    if (this.isEndWithOperator(display)) {
-                        //replace last operator
-                        this.setState({display: display.slice(0,-1) + btnVal, getAnsClicked: false});
-                        break;
-                    }
-                    if (display !== '' || lastAns) {
-                        this.setState({display: display + btnVal, getAnsClicked: false});
-                    } 
-                    break; 
+            case '+':
+            case '-':
+                this.handlePlusMinusClicked(btnVal);
+                break; 
 
-                default:
-                    this.setState({display: display + btnVal, getAnsClicked: false});
-                    break;  
+            default:
+                this.setState({display: display + btnVal, showAnswer: false});
+                break;  
         }
+    }
+
+    handleEqualsClicked(btnVal){
+        let {display, prevAnswer} = this.state;
+        if (this.isEndWithOperator(display)) {
+            return; //skip eval
+        }
+
+        let ans;
+        const replacedStr = display.replace('x','*');
+        if (this.isStartWithOperator(display)) {
+            ans = eval(prevAnswer + replacedStr);
+        } else {
+            ans = eval(replacedStr);
+        }
+
+        if (ans !== undefined) {
+            this.setState({
+                display: ans,
+                prevAnswer: ans,
+                showAnswer: true
+            });
+        } 
+    }
+
+    handlePlusMinusClicked(btnVal){
+        let {display, prevAnswer} = this.state;
+        if (this.isEndWithOperator(display)) {
+            //replace last operator
+            this.setState({display: display.slice(0,-1) + btnVal, showAnswer: false});
+            return;
+        }
+        if (display !== '' || prevAnswer) {
+            this.setState({display: display + btnVal, showAnswer: false});
+        } 
+    }
+
+    handleACClicked(){
+        this.setState({display: 0, prevAnswer: null, showAnswer: false});
     }
 
     render() {
