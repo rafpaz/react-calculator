@@ -15,9 +15,12 @@
 }
 
 .btn-action {
-    background-color: orange;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+    color: black;
 }
 
 .btn-action:hover {
-    background-color: orangered;
+    background-color: #8dd0f1;
+    border-color: #8dd0f1;
 }
