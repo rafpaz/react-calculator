@@ -13,3 +13,11 @@
 .btn-calculator:nth-child(4n+1) {
     margin-left: 0px;
 }
+
+.btn-action {
+    background-color: orange;
+}
+
+.btn-action:hover {
+    background-color: orangered;
+}

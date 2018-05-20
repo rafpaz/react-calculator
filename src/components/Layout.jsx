@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Display from './Display';
 import Button from './Button';
+import buttonsList from '../data/buttonsList';
+import operatorsList from '../data/operatorsList';
 
 class Layout extends Component {
     constructor(){
@@ -10,13 +12,12 @@ class Layout extends Component {
             lastAns: null,
             getAnsClicked: false
         };
-        this.operatorList = ['+','-'];
-        this.buttonMap = [
-            '7',  '8', '9',  '+',
-            '4',  '5', '6',  '-',
-            '1',  '2', '3',  '=',
-            'AC', '0','.'
-        ].map((val)=>{return <Button clickBtn={this.clickBtn.bind(this)} key={val} value={val} />});
+        this.operatorList = operatorsList;
+        this.buttonMap = this.getButtonsMap();
+    }
+
+    getButtonsMap(){
+        return buttonsList.map((val)=>{return <Button clickBtn={this.clickBtn.bind(this)} key={val} value={val} />});
     }
 
     isEndWithOperator(str) {
