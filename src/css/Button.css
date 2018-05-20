@@ -1,0 +1,15 @@
+.btn-calculator {
+    width: 24%;
+    height: 60px;
+    padding-top: 12px;
+    font-size: 24px;
+    margin-top: 4px;
+}
+
+.btn-calculator + .btn-calculator {
+    margin-left: 1%;
+}
+
+.btn-calculator:nth-child(4n+1) {
+    margin-left: 0px;
+}
